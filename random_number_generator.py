@@ -1,10 +1,15 @@
 import random
 import itertools
 
+#TODO should i add more doc strings to explain more?
+#TODO _random_nums & _probabilities am i defining and using them the way they want us to?
+#TODO is itertools allowed?
+#TODO the locate_num method, are there any edge cases im missing out?
+#TODO add in error handling?
+
 class RandomGen(object):
     # Values that may be returned by next_num()
     _random_nums = [-1, 0, 1, 2, 3]
-    # _random_nums = [1,1,1,1,1]
     # Probability of the occurence of random_nums
     _probabilities = [0.01, 0.3, 0.58, 0.1, 0.01]
 
