@@ -3,6 +3,7 @@ from random_number_generator import RandomGen
 
 from unittest import mock, TestCase
 
+#somehting
 class TestRandomGen(TestCase):
     @mock.patch('random_number_generator.random.random', return_value=0.9)
     def test_next_num(self, mock_random):
