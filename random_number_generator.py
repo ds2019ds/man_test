@@ -1,25 +1,35 @@
 import random
 import itertools
 
-#TODO should i add more doc strings to explain more?
-#TODO _random_nums & _probabilities am i defining and using them the way they want us to?
-#TODO is itertools allowed?
-#TODO the locate_num method, are there any edge cases im missing out?
-#TODO add in error handling?
+# TODO is the construtor used correctly?
+# TODO should i create a new class LenNotEqualError?
+
+# TODO need to add more doc strings!
 
 class RandomGen(object):
-    # Values that may be returned by next_num()
-    _random_nums = [-1, 0, 1, 2, 3]
-    # Probability of the occurence of random_nums
-    _probabilities = [0.01, 0.3, 0.58, 0.1, 0.01]
+
+    def __init__(self, random_nums, probabilities):
+        self._random_nums = random_nums
+        self._probabilities = probabilities
+
+        if not all(isinstance(num, int) for num in self._random_nums):
+            raise ValueError('random numbers need to be integers!')
+
+        if not all(isinstance(probability, float) for probability in self._probabilities):
+            raise ValueError('probabilities need to be float!')
+
+        if len(self._random_nums) != len(self._probabilities):
+            raise TypeError('Random Numbers list and Probabilities list are unequal in length')
+
+        self.cum_weights = list(itertools.accumulate(self._probabilities))
+
 
     def next_num(self):
         """
         Returns one of the randomNums. When this method is called multiple times over a long period, it should return the numbers roughly with the initialized probabilities.
         """
         random_num = random.random()
-        cum_weights = list(itertools.accumulate(self._probabilities))
-        next_num = self._random_nums[self.locate_num(random_num, cum_weights)]
+        next_num = self._random_nums[self.locate_num(random_num, self.cum_weights)]
         return next_num
 
     @staticmethod
@@ -37,5 +47,5 @@ class RandomGen(object):
         return lower_bound
 
 if __name__=='__main__':
-    ob = RandomGen()
-    print(ob.next_num())
+    rand_gen = RandomGen([-1, 0, 1, 2, 3], [0.01, 0.3, 0.58, 0.1, 0.01])
+    print(rand_gen.next_num())
