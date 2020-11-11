@@ -1,14 +1,11 @@
---are we supposed to combine everything in one query? seperate queries make more sense to me
-
-select o.order_id, p.product_id, o.quantity, o.order_price, o.dispatch_date, p.name,
-datediff(day, available_from, dispatch_date) as day_diff
+select
+o.order_id, p.product_id, o.quantity, o.order_price, o.dispatch_date, p.name
 into #tmp
 from orders o
 left join product p
 on o.product_id = p.product_id
-where (datediff(day, available_from, dispatch_date) > 30) and
+where (datediff(day, available_from, GETDATE()) > 30) and
 year(o.dispatch_date) = year(GETDATE())-1
-
 
 select product_id, sum(quantity) as quantity_sum
 from #tmp

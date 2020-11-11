@@ -3,12 +3,13 @@ from random_number_generator import RandomGen
 
 from unittest import mock, TestCase
 
-# TODO when testing the invalid lists, do i need to test for string, float.. seperate cases?
-# TODO for the unequal len list test, if i need to customise an exception class LenNotEqualError, then i need to do AssertRaise with this customised exception? arrrrgh long ting...
-
-# TODO is the mock used correctly?
 
 class TestRandomGen(TestCase):
+    """
+    mock the random.random function to return specific value to check if the RandomGen class works as intended.
+    also test the exceptions in RandomGen constructor
+    """
+
     @mock.patch('random_number_generator.random.random', return_value=0.009)
     def test_next_num_is_neg_one(self, mock_random):
         rand_gen = RandomGen([-1, 0, 1, 2, 3], [0.01, 0.3, 0.58, 0.1, 0.01])
@@ -40,13 +41,13 @@ class TestRandomGen(TestCase):
         self.assertEqual(3, num)
 
     def test_invalid_random_num_list(self):
-        self.assertRaises(ValueError, RandomGen, [-1, 0, 1, 2, 'not a number'], [0.01, 0.3, 0.58, 0.1, 0.01])
+        self.assertRaises(TypeError, RandomGen, [-1, 0, 1, 2, 'not an int'], [0.01, 0.3, 0.58, 0.1, 0.01])
 
     def test_invalid_probabilities_list(self):
-        self.assertRaises(ValueError, RandomGen, [-1, 0, 1, 2, 3], ['not a number', 0.3, 0.58, 0.1, 0.01])
+        self.assertRaises(TypeError, RandomGen, [-1, 0, 1, 2, 3], ['not a float', 0.3, 0.58, 0.1, 0.01])
 
     def test_unequal_len_list(self):
-        self.assertRaises(TypeError, RandomGen, [-1, 0, 1, 2, 3, 999], [0.01, 0.3, 0.58, 0.1, 0.01])
+        self.assertRaises(ValueError, RandomGen, [-1, 0, 1, 2, 3, 999], [0.01, 0.3, 0.58, 0.1, 0.01])
 
 if __name__ == '__main__':
     unittest.main()
